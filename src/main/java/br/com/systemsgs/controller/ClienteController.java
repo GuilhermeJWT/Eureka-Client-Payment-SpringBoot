@@ -1,9 +1,15 @@
 package br.com.systemsgs.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +32,27 @@ public class ClienteController {
 		clienteService.salvaCliente(modelClientesDTO);
 		
 		return "Cliente Salvo com Sucesso!!!";
+	}
+	
+	@GetMapping(value = "/listaTodos")
+	public List<ModelClientesDTO> listaTodos(){
+		List<ModelClientesDTO> clientes = clienteService.listaTodos();
+		
+		return clientes;
+	}
+	
+	@GetMapping(value = "/pesquisar/{id}")
+	public ModelClientesDTO pesquisaPorId(@PathVariable("id") Long id) {
+		ModelClientesDTO modelClientesDTO = clienteService.pesquisaPorId(id);
+		
+		return modelClientesDTO;
+	}
+	
+	@DeleteMapping(value = "/deletar/{id}")
+	public ResponseEntity<?> deletaCliente(@PathVariable("id") Long id){
+		clienteService.deletarCliente(id);
+		
+		return ResponseEntity.ok("Cliente Removido com Sucesso!!!");
 	}
 
 }
