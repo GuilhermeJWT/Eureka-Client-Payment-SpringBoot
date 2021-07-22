@@ -3,12 +3,14 @@ package br.com.systemsgs.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.systemsgs.model.ModelClientes;
+import br.com.systemsgs.dto.ModelClientesDTO;
 import br.com.systemsgs.service.ClienteService;
 
 @RestController
@@ -19,8 +21,11 @@ public class ClienteController {
 	private ClienteService clienteService;
 	
 	@PostMapping(value = "/salvar")
-	public ModelClientes salvaCliente(@RequestBody @Valid ModelClientes modelClientes){
-		return clienteService.salvaCliente(modelClientes);
+	@ResponseStatus(value = HttpStatus.CREATED)
+	public String salvaCliente(@RequestBody @Valid ModelClientesDTO modelClientesDTO){
+		clienteService.salvaCliente(modelClientesDTO);
+		
+		return "Cliente Salvo com Sucesso!!!";
 	}
 
 }

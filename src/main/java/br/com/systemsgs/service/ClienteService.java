@@ -1,8 +1,12 @@
 package br.com.systemsgs.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.systemsgs.config.DozerConverter;
+import br.com.systemsgs.dto.ModelClientesDTO;
 import br.com.systemsgs.model.ModelClientes;
 import br.com.systemsgs.repository.ClienteRepository;
 
@@ -12,10 +16,12 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository clienteRepository;
 	
-	public ModelClientes salvaCliente(ModelClientes modelClientes){
-		ModelClientes clienteSalvo = clienteRepository.save(modelClientes);
+	@Transactional
+	public ModelClientesDTO salvaCliente(ModelClientesDTO modelClientesDTO){
+		ModelClientes modelClientes = DozerConverter.converteEntidade(modelClientesDTO, ModelClientes.class);
+		ModelClientesDTO clienteConvertido = DozerConverter.converteEntidade(clienteRepository.save(modelClientes), ModelClientesDTO.class);
 		
-		return clienteSalvo;
+		return clienteConvertido;
 	}
 
 }
