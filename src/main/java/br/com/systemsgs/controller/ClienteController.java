@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.systemsgs.config.DozerConverter;
 import br.com.systemsgs.dto.ModelClientesDTO;
+import br.com.systemsgs.model.ModelClientes;
 import br.com.systemsgs.service.ClienteService;
 
 @RestController
@@ -29,6 +31,17 @@ public class ClienteController {
 	@PostMapping(value = "/salvar")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public String salvaCliente(@RequestBody @Valid ModelClientesDTO modelClientesDTO){
+		
+		System.out.print("oi");
+		
+		for(int pos = 0; pos < modelClientesDTO.getEnderecos().size(); pos++) {
+			ModelClientes converteCliente = DozerConverter.converteEntidade(modelClientesDTO, ModelClientes.class);
+			modelClientesDTO.getEnderecos().get(pos).setClientes(converteCliente);
+			System.out.print(modelClientesDTO.getEnderecos().toString());
+			System.out.println(modelClientesDTO.getEnderecos());
+		}
+		
+		
 		clienteService.salvaCliente(modelClientesDTO);
 		
 		return "Cliente Salvo com Sucesso!!!";

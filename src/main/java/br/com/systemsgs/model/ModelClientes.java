@@ -1,14 +1,22 @@
 package br.com.systemsgs.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "clientes")
@@ -26,6 +34,12 @@ public class ModelClientes implements Serializable{
 	@NotBlank(message = "O E-Mail deve ser Informado!!!")
 	@Email(message = "E-mail Inválido, Informe Outro!!!")
 	private String email;
+	
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dataRegistro = LocalDate.now();
+	
+	@OneToMany(mappedBy = "clientes", orphanRemoval = true,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	List<ModelEndereco> enderecos = new ArrayList<ModelEndereco>();
 
 	public Long getId() {
 		return id;
@@ -49,6 +63,22 @@ public class ModelClientes implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public LocalDate getDataRegistro() {
+		return dataRegistro;
+	}
+	
+	public void setDataRegistro(LocalDate dataRegistro) {
+		this.dataRegistro = dataRegistro;
+	}
+	
+	public List<ModelEndereco> getEnderecos() {
+		return enderecos;
+	}
+	
+	public void setEnderecos(List<ModelEndereco> enderecos) {
+		this.enderecos = enderecos;
 	}
 
 	@Override
