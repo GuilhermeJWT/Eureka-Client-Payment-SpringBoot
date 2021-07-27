@@ -39,7 +39,7 @@ public class ModelClientes implements Serializable{
 	private LocalDate dataRegistro = LocalDate.now();
 	
 	@OneToMany(mappedBy = "clientes", orphanRemoval = true,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	List<ModelEndereco> enderecos = new ArrayList<ModelEndereco>();
+	private List<ModelEndereco> enderecos;
 
 	public Long getId() {
 		return id;
